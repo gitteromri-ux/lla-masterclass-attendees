@@ -37,7 +37,7 @@ b,strong{color:var(--white);font-weight:700}
 .numeral{position:absolute;right:-20px;top:-40px;font-family:var(--serif);font-style:italic;font-size:clamp(180px,22vw,320px);line-height:1;color:rgba(94,182,255,.09);pointer-events:none;user-select:none;z-index:0}
 .light .numeral{color:rgba(0,110,255,.08)}
 .grain{position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.rv{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv{opacity:1;transform:none;transition:opacity .9s var(--ease),transform .9s var(--ease)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.btn{transition:none}}
 
