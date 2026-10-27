@@ -11,8 +11,17 @@
  function text(selector,value){const e=document.querySelector(selector);if(e&&e.textContent!==value)e.textContent=value}
  function html(selector,value){const e=document.querySelector(selector);if(e&&e.innerHTML!==value)e.innerHTML=value}
  function apply(){
+  document.title='The Longevity Blueprint | Masterclass attendee course information';
+  if(!document.getElementById('attendee-source-field-styles')){
+   const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+   const rules=[...css.matchAll(/([^{}]*#enrollModal[^{}]*\.em-in[^{}]*)\{([^{}]*)\}/g)];
+   const style=document.createElement('style');style.id='attendee-source-field-styles';
+   style.textContent=rules.map(m=>m[1].replaceAll('#enrollModal','#ask')+'{'+m[2]+'}\n'+m[1].replaceAll('#enrollModal','.attendee-coupon')+'{'+m[2]+'}').join('\n')+'\n.attendee-coupon button[data-coupon]{color:inherit}html{scroll-padding-top:130px}';
+   document.head.append(style);
+  }
   html('#hero h1','The Longevity <span class="pdp-cine-blue">Blueprint</span>');
   html('#hero .pdp-cine-sub','Master the six pillars of longevity through <strong>18 live classes</strong>, practical exercises and your own health data.');
+  text('#hero figcaption span','Founding Faculty, Longevity Life Academy');
   const heroCTA=document.querySelector('#hero .pdp-cine-cta');if(heroCTA){heroCTA.href='#learn-com';heroCTA.innerHTML='Explore the six pillars';}
   document.querySelectorAll('#learn-com .topic-v2-desc').forEach((p,i)=>{if(descriptions[i])p.textContent=descriptions[i]});
   html('#included h2','What the course <em>includes</em>');
@@ -30,13 +39,32 @@
   html('#mechanism h2','Course <em>timeline</em>');
   html('#whatitis h2','How the live <em>course works</em>');
   html('#faq h2','Frequently asked <em>questions</em>');
-  const strip=document.getElementById('mockStrip');if(strip)strip.innerHTML='<span class="t lg">Use your masterclass coupon code: <b>JULIE249</b> or <b>MASTERCLASS-VIP</b></span><span class="t sm">Your masterclass coupon codes</span><a class="code" href="#offer" data-coupon="JULIE249">JULIE249</a><a class="code" href="#offer" data-coupon="MASTERCLASS-VIP">MASTERCLASS-VIP</a>';
+  document.querySelectorAll('#faq .faq-item').forEach(item=>{
+   if(/How much does it cost/i.test(item.textContent)){const answer=item.querySelector('.faq-answer p,.faq-body p');if(answer)answer.textContent='Standard tuition is $179 per month for five months. With JULIE249 or MASTERCLASS-VIP, the attendee offer is five payments of $149, $745 total. Select your code and contact the enrollment team to confirm the next available class.'}
+  });
+  const strip=document.getElementById('mockStrip');if(strip)strip.innerHTML='<span class="t lg">Use your masterclass coupon code</span><span class="t sm"><a href="#offer" data-coupon="JULIE249">JULIE249</a><span>or</span><a href="#offer" data-coupon="MASTERCLASS-VIP">MASTERCLASS-VIP</a></span><a class="code" href="#offer" data-coupon="JULIE249">JULIE249</a><a class="code" href="#offer" data-coupon="MASTERCLASS-VIP">MASTERCLASS-VIP</a>';
   const bar=document.getElementById('mockBar');if(bar){const price=bar.querySelector('.l b');if(price)price.textContent='Masterclass attendees';const a=bar.querySelector('a');if(a){a.href='#ask';a.textContent='Request a callback'}}
   document.querySelectorAll('a[href*="checkout.html"]').forEach(a=>{a.href='#offer';a.removeAttribute('data-plan')});
   document.querySelectorAll('header a[href="#offer"]').forEach(a=>a.textContent='Course offer');
+  // The captured source places this initializer before the carousel markup.
+  // Run the original one-card scroll behavior after that markup exists.
+  const rail=document.getElementById('tgRail');
+  if(rail&&!rail.dataset.attendeeBound){
+   rail.dataset.attendeeBound='1';
+   const step=()=>{const card=rail.querySelector('.topic-v2');return card?card.getBoundingClientRect().width+20:400};
+   document.querySelector('#learn-com .tg-prev')?.addEventListener('click',()=>rail.scrollBy({left:-step(),behavior:'smooth'}));
+   document.querySelector('#learn-com .tg-next')?.addEventListener('click',()=>rail.scrollBy({left:step(),behavior:'smooth'}));
+   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{const video=entry.target;if(entry.isIntersecting&&!matchMedia('(prefers-reduced-motion:reduce)').matches)video.play().catch(()=>{});else video.pause()}),{threshold:.2});
+   rail.querySelectorAll('video').forEach(video=>{
+    video.muted=true;
+    if(!video.poster)video.poster=video.src.replace('/assets/','/assets/posters/').replace(/\.mp4(?:\?.*)?$/,'.jpg');
+    observer.observe(video);
+   });
+  }
  }
- apply();document.addEventListener('DOMContentLoaded',apply);window.addEventListener('load',apply);setTimeout(apply,1000);setTimeout(apply,2500);
+ apply();document.addEventListener('DOMContentLoaded',apply);window.addEventListener('load',apply);setTimeout(apply,1000);setTimeout(()=>{apply();document.documentElement.dataset.attendeeReady='stable'},2500);
  document.addEventListener('click',function(e){
+  const code=e.target.closest('[data-coupon]');if(code){const field=document.getElementById('codeInput');if(field)field.value=code.dataset.coupon;}
   const a=e.target.closest('a[href="#offer"],a[href="#ask"],a[href="#learn-com"]');
   if(a){e.preventDefault();e.stopImmediatePropagation();document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});}
  },true);
