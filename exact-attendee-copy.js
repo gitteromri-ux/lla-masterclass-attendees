@@ -40,7 +40,7 @@
   html('#whatitis h2','How the live <em>course works</em>');
   html('#faq h2','Frequently asked <em>questions</em>');
   document.querySelectorAll('#faq .faq-item').forEach(item=>{
-   if(/How much does it cost/i.test(item.textContent)){const answer=item.querySelector('.faq-answer p,.faq-body p');if(answer)answer.textContent='Standard tuition is $179 per month for five months. With JULIE249 or MASTERCLASS-VIP, the attendee offer is five payments of $149, $745 total. Select your code and contact the enrollment team to confirm the next available class.'}
+   if(/How much does it cost/i.test(item.textContent)){const answer=item.querySelector('.faq-a-inner');if(answer)answer.textContent='Standard tuition is $179 per month for five months. With JULIE249 or MASTERCLASS-VIP, the attendee offer is five payments of $149, $745 total. Select your code and contact the enrollment team to confirm the next available class.'}
   });
   const strip=document.getElementById('mockStrip');if(strip)strip.innerHTML='<span class="t lg">Use your masterclass coupon code</span><span class="t sm"><a href="#offer" data-coupon="JULIE249">JULIE249</a><span>or</span><a href="#offer" data-coupon="MASTERCLASS-VIP">MASTERCLASS-VIP</a></span><a class="code" href="#offer" data-coupon="JULIE249">JULIE249</a><a class="code" href="#offer" data-coupon="MASTERCLASS-VIP">MASTERCLASS-VIP</a>';
   const bar=document.getElementById('mockBar');if(bar){const price=bar.querySelector('.l b');if(price)price.textContent='Masterclass attendees';const a=bar.querySelector('a');if(a){a.href='#ask';a.textContent='Request a callback'}}
