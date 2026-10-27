@@ -37,7 +37,14 @@
   html('#syllabus h2','The 18-class <em>syllabus</em>');
   html('#teachers h2','Course <em>faculty</em>');
   html('#mechanism h2','Course <em>timeline</em>');
+  text('#mechanism .fn-lead','Confirm your class with the enrollment team. Complete 18 weekly sessions and develop your written Blueprint.');
+  const steps=document.querySelectorAll('#mechanism .fn-journey-step');
+  if(steps[0]){steps[0].querySelector('h3').textContent='Enrollment and platform access';steps[0].querySelector('p').textContent='The team confirms your class, coupon and enrollment details, then explains access to the learning platform.'}
+  if(steps[1])steps[1].querySelector('p').textContent='50 minutes live with your instructor and classmates. Your available start date and weekly meeting time are confirmed by the enrollment team.';
+  if(steps[3])steps[3].querySelector('h3').textContent='Weekly learning and practice';
   html('#whatitis h2','How the live <em>course works</em>');
+  const methodTitles=['Live classes and recordings','Health data and weekly practice','Group discussion and peer feedback','Your written protocol'];
+  document.querySelectorAll('#whatitis .pdp-value-card h3').forEach((h,i)=>{if(methodTitles[i])h.textContent=methodTitles[i]});
   html('#faq h2','Frequently asked <em>questions</em>');
   document.querySelectorAll('#faq .faq-item').forEach(item=>{
    if(/How much does it cost/i.test(item.textContent)){const answer=item.querySelector('.faq-a-inner');if(answer)answer.textContent='Standard tuition is $179 per month for five months. With JULIE249 or MASTERCLASS-VIP, the attendee offer is five payments of $149, $745 total. Select your code and contact the enrollment team to confirm the next available class.'}
